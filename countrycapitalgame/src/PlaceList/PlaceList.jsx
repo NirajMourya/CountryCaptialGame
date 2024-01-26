@@ -25,7 +25,7 @@ export default function PlaceList({ data }) {
     const add = (val) => 
     {
         var filterData = [];
-        if(state.country && state.country != val && !state.wrongData)
+        if(state.country && state.country !== val && !state.wrongData)
         {
              if(data[state.country] === val )
              {
@@ -38,7 +38,7 @@ export default function PlaceList({ data }) {
              else
                 setState({wrongData:true,country:state.country,capital:val})
         }
-        else if(state.capital && state.capital != val && !state.wrongData)
+        else if(state.capital && state.capital !== val && !state.wrongData)
         {
              if(data[val] === state.capital )
              {  
@@ -62,14 +62,14 @@ export default function PlaceList({ data }) {
              }
         }
     } 
-    return (<div>{displayButtons.length ? 
+    return (<div className="places">{displayButtons.length ? 
              ( 
                  displayButtons.map( (value) => 
                     (<button 
-                    style = {
-                        ((state.country === value  ||  state.capital === value) && state.wrongData)? {backgroundColor: "#ff0000"}: 
+                    className = {
+                        ((state.country === value  ||  state.capital === value) && state.wrongData)? "wrong": 
                         ((state.country === value && !state.capital) || (!state.country && state.capital === value ))  ?
-                        {backgroundColor: "#0000ff"} :{}
+                        "selected" :{}
                     }
                        onClick={
                        () => {
@@ -78,6 +78,6 @@ export default function PlaceList({ data }) {
                     }>{value}</button>)
                  )
              ):
-             (<span>Congratulations</span>)   
+             (<span>Congratulations!!</span>)   
     }</div>);
 }

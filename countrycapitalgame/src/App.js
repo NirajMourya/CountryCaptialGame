@@ -6,7 +6,6 @@ import { BASE_URL } from './config/config';
 
 function App() {
   const [loader,setLoader] = useState(true);
-  const [timer, setTimer] = useState(10);
   const [countryData,setCountryData] = useState(null)
   
   useEffect(() => {
@@ -24,18 +23,20 @@ function App() {
                   if(data[i].capital)
                     tempArray[data[i].name] = data[i].capital
                 }
-                console.log(data);
+
                 setCountryData(tempArray);
             }
             setLoader(false);
       })
   }
   return (
-    <div className="App">
-         { 
-             loader ? "Loading....":  <PlaceList data={countryData} />
-         }
-    </div>
+    <>
+      <div>
+          { 
+              loader ? "Loading....":  <PlaceList data={countryData} />
+          }
+      </div>
+    </>
   );
 }
 
