@@ -31,18 +31,41 @@ body {
 }
 
 header {
-  margin: 0.25rem 0;
   text-align: center;
+  margin: 2rem 0;
 }
 
-header img {
-  width: 25rem;
-  height: 25rem;
-  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.6));
+header h1 {
+  margin: 0;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 5rem;
+  background: linear-gradient(40deg, #ea00ff, #ea00ff, #03d5ff, #03d5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+header p {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #b180e5;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+.level {
+  font-family: 'Roboto', sans-serif;
+  color: #cbb7f0;
+  text-align: center;
 }
 .places {
-  width: 90%;
-  margin: 0 auto;
+  max-width: 50rem;
+  margin: auto;
+  padding: 2rem;
+  background: linear-gradient(180deg, #3e2a60 0%, #321061 100%);
+  border-radius: 8px;
+  /* box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.6); */
+  box-shadow: 1px 1px 8px 4px rgba(12, 5, 32, 0.6);
+  text-align: center;
 }
 
 .places button {
