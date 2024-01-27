@@ -4,7 +4,7 @@ import PlaceList from './PlaceList/PlaceList';
 import axios from "axios"
 import { BASE_URL } from './config/config';
 
-const COUNTRYCOUNT = 20;
+const COUNTRYCOUNT = 5;
 function App() {
   const [loader,setLoader] = useState(true);
   const [countryData,setCountryData] = useState(null);
@@ -13,6 +13,10 @@ function App() {
     fetchData();
   },[])
 
+  function handlelevelCompleted()
+  {
+     setLevel((prevLevel) => prevLevel+1);
+  }
   
   const fetchData = () => {
       setLoader(true);
@@ -42,7 +46,12 @@ function App() {
     <>
       <div>
           { 
-              loader ? "Loading....":  <PlaceList data={countryData.slice((level-1)*COUNTRYCOUNT,level*COUNTRYCOUNT)} />
+              loader ? "Loading....":  
+              (
+                <>
+                <h2>Level {level}</h2>
+                <PlaceList data={countryData.slice((level-1)*COUNTRYCOUNT,level*COUNTRYCOUNT)} handlelevelCompleted={handlelevelCompleted}/>
+                </>)
           }
       </div>
     </>

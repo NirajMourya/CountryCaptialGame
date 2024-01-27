@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 
-export default function PlaceList({ data }) {
+export default function PlaceList({ data,handlelevelCompleted }) {
     const [state,setState] = useState({
         "country":"",
         "capital":"",
@@ -10,7 +10,7 @@ export default function PlaceList({ data }) {
 
     useEffect(() =>{
        shuffleData(data)
-    },[])
+    },[data])
 
     const shuffleData = (dataArray) =>{
         let tempArray = []
@@ -36,7 +36,10 @@ export default function PlaceList({ data }) {
                 filterData = displayButtons.filter((a) => {
                       return  a !== val && a !== state.country
                 })
-                setDisplayButtons([...filterData])
+                if(filterData.length === 0)
+                  handlelevelCompleted();
+                else
+                  setDisplayButtons([...filterData])
              } 
              else
                 setState({wrongData:true,country:state.country,capital:val})
@@ -52,7 +55,10 @@ export default function PlaceList({ data }) {
                  filterData = displayButtons.filter((a) => {
                       return  a !== val && a !== state.capital
                  })
-                 setDisplayButtons([...filterData])
+                 if(filterData.length === 0)
+                  handlelevelCompleted();
+                 else
+                  setDisplayButtons([...filterData])
              }
              else
                 setState({wrongData:true,country:val,capital:state.capital})
