@@ -78,7 +78,7 @@ export default function PlaceList({ data,handlelevelCompleted }) {
              }
         }
     } 
-    return (<div className="places">{displayButtons.length ? 
+    return (<div className="places">{displayButtons.length && 
              ( 
                  displayButtons.map( (value,index) => 
                     (<button 
@@ -94,7 +94,6 @@ export default function PlaceList({ data,handlelevelCompleted }) {
                        } 
                     }>{value}</button>)
                  )
-             ):
-             (<span>Congratulations!!</span>)   
+             )  
     }</div>);
 }

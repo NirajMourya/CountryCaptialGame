@@ -1,25 +1,31 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import PlaceList from './PlaceList/PlaceList';
+import PlaceList from './components/PlaceList';
 import axios from "axios"
 import { BASE_URL } from './config/config';
+import Congratulations from './components/Congratulations';
 
 const COUNTRYCOUNT = 20;
 function App() {
-  const [loader,setLoader] = useState(true);
-  const [countryData,setCountryData] = useState(null);
-  const [level,setLevel] = useState(1);  
+  const [gameStatus,setGameStatus] = useState({
+     level:1,
+     countryData:[]
+  })
   useEffect(() => {
     fetchData();
   },[])
 
   function handlelevelCompleted()
   {
-     setLevel((prevLevel) => prevLevel+1);
+    setGameStatus((prevGameStatus) => {
+       return {
+        ...prevGameStatus,
+        level:prevGameStatus.level +1
+       }
+    });
   }
   
   const fetchData = () => {
-      setLoader(true);
       axios.get(BASE_URL).then((response) =>{
             if(response.data){
                 let data = response.data.data;
@@ -37,21 +43,27 @@ function App() {
                   }   
                 }
                 tempArray.sort(() => Math.random() - 0.5)
-                setCountryData(tempArray);
+                setGameStatus({
+                   countryData:tempArray,
+                   level:1
+                });
             }
-            setLoader(false);
       })
   }
+ 
   return (
     <>
       <div>
           { 
-              loader ? "Loading....":  
+              gameStatus.countryData.length === 0 ? (<p className='level'>Loading....</p>):
+              ((gameStatus.level - 1)*COUNTRYCOUNT) > gameStatus.countryData.length ?
+              <Congratulations />:
               (
                 <>
-                <h2 className='level'>Level {level}</h2>
-                <PlaceList data={countryData.slice((level-1)*COUNTRYCOUNT,level*COUNTRYCOUNT)} handlelevelCompleted={handlelevelCompleted}/>
-                </>)
+                <h2 className='level'>Level {gameStatus.level}</h2>
+                <PlaceList data={gameStatus.countryData.slice((gameStatus.level-1)*COUNTRYCOUNT,gameStatus.level*COUNTRYCOUNT)} handlelevelCompleted={handlelevelCompleted}/>
+                </>
+              )                            
           }
       </div>
     </>
