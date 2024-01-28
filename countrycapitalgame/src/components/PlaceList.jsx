@@ -82,7 +82,7 @@ export default function PlaceList({ data,handlelevelCompleted }) {
              ( 
                  displayButtons.map( (value,index) => 
                     (<button 
-                      key = {index}
+                      key = {`${index}_${value}`}
                     className = {
                         ((state.country === value  ||  state.capital === value) && state.wrongData)? "wrong": 
                         ((state.country === value && !state.capital) || (!state.country && state.capital === value ))  ?

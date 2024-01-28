@@ -35,9 +35,13 @@ function App() {
                   let countryData = data[i];
                   if(countryData.capital)
                   {
+                     let CapitalCity = countryData["capital"];
+                     if(countryData["capital"] === countryData["name"])
+                       CapitalCity = countryData["capital"] + " City";
+                    
                      let tempObject = {
                       'CountryName': countryData["name"],
-                      'CapitalCity':countryData["capital"]
+                      'CapitalCity': CapitalCity
                      };
                      tempArray.push(tempObject);   
                   }   
