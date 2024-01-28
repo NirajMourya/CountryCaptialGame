@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 
-export default function PlaceList({ data }) {
+export default function PlaceList({ data,handlelevelCompleted }) {
     const [state,setState] = useState({
         "country":"",
         "capital":"",
@@ -10,49 +10,65 @@ export default function PlaceList({ data }) {
 
     useEffect(() =>{
        shuffleData(data)
-    },[])
+    },[data])
 
     const shuffleData = (dataArray) =>{
-         let tempArray = []
-        Object.keys(dataArray).map((key) =>{
-             console.log(key);
-             tempArray.push(key)
-             tempArray.push(dataArray[key])
+        let tempArray = []
+        dataArray.map((place) =>{
+             tempArray.push(place['CountryName'])
+             tempArray.push(place['CapitalCity'])
          })
         tempArray.sort(() => Math.random() - 0.5)
          setDisplayButtons([...tempArray])
     }
     const add = (val) => 
     {
+        debugger;
         var filterData = [];
-        if(state.country && state.country != val && !state.wrongData)
+        if(state.country && state.country !== val && !state.wrongData)
         {
-             if(data[state.country] === val )
+            let country = data.filter(function (o) {
+               return o.CountryName   === state.country;
+            });
+             if(country[0].CapitalCity === val )
              {
                 setState({wrongData:false})
                 filterData = displayButtons.filter((a) => {
                       return  a !== val && a !== state.country
                 })
-                setDisplayButtons([...filterData])
+                if(filterData.length === 0)
+                  handlelevelCompleted();
+                else
+                  setDisplayButtons([...filterData])
              } 
              else
                 setState({wrongData:true,country:state.country,capital:val})
         }
-        else if(state.capital && state.capital != val && !state.wrongData)
+        else if(state.capital && state.capital !== val && !state.wrongData)
         {
-             if(data[val] === state.capital )
+            let country = data.filter(function (o) {
+               return o.CapitalCity   === state.capital;
+            });
+             if(country[0].CountryName === val )
              {  
                  setState({wrongData:false})
                  filterData = displayButtons.filter((a) => {
                       return  a !== val && a !== state.capital
                  })
-                 setDisplayButtons([...filterData])
+                 if(filterData.length === 0)
+                  handlelevelCompleted();
+                 else
+                  setDisplayButtons([...filterData])
              }
              else
                 setState({wrongData:true,country:val,capital:state.capital})
         }
         else{
-             if(val in data)
+            
+            let countryExists = data.filter(function (o) {
+               return o.CountryName   === val;
+            });
+             if(countryExists.length > 0)
              {
                 setState({country:val})
              }
@@ -62,14 +78,15 @@ export default function PlaceList({ data }) {
              }
         }
     } 
-    return (<div>{displayButtons.length ? 
+    return (<div className="places">{displayButtons.length && 
              ( 
-                 displayButtons.map( (value) => 
+                 displayButtons.map( (value,index) => 
                     (<button 
-                    style = {
-                        ((state.country === value  ||  state.capital === value) && state.wrongData)? {backgroundColor: "#ff0000"}: 
+                      key = {`${index}_${value}`}
+                    className = {
+                        ((state.country === value  ||  state.capital === value) && state.wrongData)? "wrong": 
                         ((state.country === value && !state.capital) || (!state.country && state.capital === value ))  ?
-                        {backgroundColor: "#0000ff"} :{}
+                        "selected" :{}
                     }
                        onClick={
                        () => {
@@ -77,7 +94,6 @@ export default function PlaceList({ data }) {
                        } 
                     }>{value}</button>)
                  )
-             ):
-             (<span>Congratulations</span>)   
+             )  
     }</div>);
 }
